@@ -1,20 +1,28 @@
 
 <!DOCTYPE HTML>
-<html lang="" >
+<html lang="zh-hans" >
     <head>
         <meta charset="UTF-8">
         <meta content="text/html; charset=utf-8" http-equiv="Content-Type">
-        <title>Nginx模块结构 · GitBook</title>
+        <title>Nginx模块结构 · 我的笔记</title>
         <meta http-equiv="X-UA-Compatible" content="IE=edge" />
         <meta name="description" content="">
         <meta name="generator" content="GitBook 3.2.3">
-        
+        <meta name="author" content="ruleless">
         
         
     
     <link rel="stylesheet" href="../../gitbook/style.css">
 
     
+            
+                
+                <link rel="stylesheet" href="../../gitbook/gitbook-plugin-image-captions/image-captions.css">
+                
+            
+                
+                <link rel="stylesheet" href="../../gitbook/gitbook-plugin-page-treeview/style.css">
+                
             
                 
                 <link rel="stylesheet" href="../../gitbook/gitbook-plugin-highlight/website.css">
@@ -69,7 +77,7 @@
         
             
 <div id="book-search-input" role="search">
-    <input type="text" placeholder="Type to search" />
+    <input type="text" placeholder="输入并搜索" />
 </div>
 
             
@@ -80,7 +88,16 @@
 <ul class="summary">
     
     
+    
+        
+        <li>
+            <a href="https://github.com/ruleless/notes" target="_blank" class="custom-link">GitHub</a>
+        </li>
+    
+    
 
+    
+    <li class="divider"></li>
     
 
     
@@ -92,7 +109,7 @@
                 <a href="../../">
             
                     
-                    笔记概要
+                    Introduction
             
                 </a>
             
@@ -100,9 +117,9 @@
             
         </li>
     
-        <li class="chapter " data-level="1.2" data-path="../../design-pattern/README.md">
+        <li class="chapter " data-level="1.2" data-path="../../design-pattern/">
             
-                <span>
+                <a href="../../design-pattern/">
             
                     
                     设计模式
@@ -159,9 +176,9 @@
             <ul class="articles">
                 
     
-        <li class="chapter " data-level="1.3.1" data-path="README.md">
+        <li class="chapter " data-level="1.3.1" data-path="./">
             
-                <span>
+                <a href="./">
             
                     
                     Nginx核心模块
@@ -229,7 +246,7 @@
 
     <li>
         <a href="https://www.gitbook.com" target="blank" class="gitbook-link">
-            Published with GitBook
+            本书使用 GitBook 发布
         </a>
     </li>
 </ul>
@@ -267,7 +284,16 @@
     
                                 <section class="normal markdown-section">
                                 
-                                <h1 id="nginx&#x6A21;&#x5757;&#x7ED3;&#x6784;">Nginx&#x6A21;&#x5757;&#x7ED3;&#x6784;</h1>
+                                <div class="treeview__container"><div class="treeview__container-title"><span class="treeview__main-title">Treeview</span><span class="treeview__copyright">Copyright &#xA9; ruleless all right reserved, powered by <a href="https://github.com/aleen42" target="_blank">aleen42</a></span></div><ul>
+<li><div><a href="#nginx&#x6A21;&#x5757;&#x7ED3;&#x6784;">Nginx&#x6A21;&#x5757;&#x7ED3;&#x6784;</a><i class="level__parent level__item level__parent--opened" state="opened" onclick="var curState = this.getAttribute(&apos;state&apos;);var nextState = curState === &apos;opened&apos; ? &apos;hidden&apos; : &apos;opened&apos;;this.setAttribute(&apos;state&apos;, nextState);this.className = this.className.split(curState).join(nextState);var list = this.parentNode.nextElementSibling;if (nextState === &apos;hidden&apos;) {    list.style.display = &apos;none&apos;;} else {    list.style.display = &apos;block&apos;;}"></i></div>
+<ul>
+<li><div><a href="#ngxcommandt&#x547D;&#x4EE4;&#x89E3;&#x6790;&#x7ED3;&#x6784;&#x4F53;">ngxcommandt&#x547D;&#x4EE4;&#x89E3;&#x6790;&#x7ED3;&#x6784;&#x4F53;</a><i></i></div></li>
+<li><div><a href="#&#x6A21;&#x5757;&#x4E0A;&#x4E0B;&#x6587;">&#x6A21;&#x5757;&#x4E0A;&#x4E0B;&#x6587;</a><i></i></div></li>
+</ul></li>
+</ul>
+</div>
+
+<h1 id="nginx&#x6A21;&#x5757;&#x7ED3;&#x6784;">Nginx&#x6A21;&#x5757;&#x7ED3;&#x6784;</h1>
 <p>&#x5728;nginx&#x4E2D;&#xFF0C;&#x4EE5;<code>ngx_module_t</code>&#x7ED3;&#x6784;&#x4F53;&#x62BD;&#x8C61;&#x6A21;&#x5757;&#xFF0C;<code>ngx_module_t</code>&#x5173;&#x8054;&#x4E00;&#x7EC4;<code>ngx_command_t</code>&#x547D;&#x4EE4;&#x6570;&#x7EC4;&#x548C;&#x4E00;&#x4E2A;<code>ngx_*_module_t</code>&#x4E0A;&#x4E0B;&#x6587;&#x3002;&#x793A;&#x610F;&#x56FE;&#x5982;&#x4E0B;&#xFF1A;
 <img src="en-resource://database/3172:1" alt="d11484cce94b5b0cd951ebb7051f1ec7.png"></p>
 <p><code>ngx_module_t</code> &#x5B9A;&#x4E49;&#x4E86;7&#x4E2A;&#x65B9;&#x6CD5;&#xFF1A;</p>
@@ -431,7 +457,7 @@
     <script>
         var gitbook = gitbook || [];
         gitbook.push(function() {
-            gitbook.page.hasChanged({"page":{"title":"Nginx模块结构","level":"1.3.1.3","depth":3,"previous":{"title":"Nginx内存池","level":"1.3.1.2","depth":3,"path":"nginx/core/nginx_mempool.md","ref":"nginx/core/nginx_mempool.md","articles":[]},"dir":"ltr"},"config":{"gitbook":"*","theme":"default","variables":{},"plugins":[],"pluginsConfig":{"highlight":{},"search":{},"lunr":{"maxIndexSize":1000000,"ignoreSpecialCharacters":false},"sharing":{"facebook":true,"twitter":true,"google":false,"weibo":false,"instapaper":false,"vk":false,"all":["facebook","google","twitter","weibo","instapaper"]},"fontsettings":{"theme":"white","family":"sans","size":2},"theme-default":{"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"showLevel":false}},"structure":{"langs":"LANGS.md","readme":"README.md","glossary":"GLOSSARY.md","summary":"SUMMARY.md"},"pdf":{"pageNumbers":true,"fontSize":12,"fontFamily":"Arial","paperSize":"a4","chapterMark":"pagebreak","pageBreaksBefore":"/","margin":{"right":62,"left":62,"top":56,"bottom":56}},"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"}},"file":{"path":"nginx/core/nginx_module_structure.md","mtime":"2020-06-02T09:30:56.436Z","type":"markdown"},"gitbook":{"version":"3.2.3","time":"2020-06-02T09:32:10.648Z"},"basePath":"../..","book":{"language":""}});
+            gitbook.page.hasChanged({"page":{"title":"Nginx模块结构","level":"1.3.1.3","depth":3,"previous":{"title":"Nginx内存池","level":"1.3.1.2","depth":3,"path":"nginx/core/nginx_mempool.md","ref":"nginx/core/nginx_mempool.md","articles":[]},"dir":"ltr"},"config":{"plugins":["-livereload","image-captions","github","page-treeview@2.9.8","editlink"],"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"pluginsConfig":{"page-treeview":{"copyright":"Copyright &#169; ruleless","minHeaderCount":"2","minHeaderDeep":"2"},"github":{"url":"https://github.com/ruleless/notes"},"editlink":{"label":"编辑本页","multilingual":false,"base":"https://github.com/ruleless/notes/blob/master/"},"search":{},"lunr":{"maxIndexSize":1000000,"ignoreSpecialCharacters":false},"fontsettings":{"theme":"white","family":"sans","size":2},"highlight":{},"sharing":{"facebook":true,"twitter":true,"google":false,"weibo":false,"instapaper":false,"vk":false,"all":["facebook","google","twitter","weibo","instapaper"]},"theme-default":{"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"showLevel":false},"image-captions":{"attributes":{"width":"600"},"caption":"图 _PAGE_LEVEL_._PAGE_IMAGE_NUMBER_ - _CAPTION_","variable_name":"_pictures"}},"theme":"default","author":"ruleless","pdf":{"pageNumbers":true,"fontSize":12,"fontFamily":"Arial","paperSize":"a4","chapterMark":"pagebreak","pageBreaksBefore":"/","margin":{"right":62,"left":62,"top":56,"bottom":56}},"structure":{"langs":"LANGS.md","readme":"README.md","glossary":"GLOSSARY.md","summary":"SUMMARY.md"},"variables":{"_pictures":[]},"title":"我的笔记","language":"zh-hans","links":{"sidebar":{"GitHub":"https://github.com/ruleless/notes"}},"gitbook":"*"},"file":{"path":"nginx/core/nginx_module_structure.md","mtime":"2020-06-02T09:49:43.623Z","type":"markdown"},"gitbook":{"version":"3.2.3","time":"2020-06-02T09:51:33.923Z"},"basePath":"../..","book":{"language":""}});
         });
     </script>
 </div>
@@ -439,6 +465,14 @@
         
     <script src="../../gitbook/gitbook.js"></script>
     <script src="../../gitbook/theme.js"></script>
+    
+        
+        <script src="../../gitbook/gitbook-plugin-github/plugin.js"></script>
+        
+    
+        
+        <script src="../../gitbook/gitbook-plugin-editlink/plugin.js"></script>
+        
     
         
         <script src="../../gitbook/gitbook-plugin-search/search-engine.js"></script>
