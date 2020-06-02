@@ -1,7 +1,10 @@
 # Nginx模块结构
 
+# `ngx_module_t`
+
 在nginx中，以`ngx_module_t`结构体抽象模块，`ngx_module_t`关联一组`ngx_command_t`命令数组和一个`ngx_*_module_t`上下文。示意图如下：
-![d11484cce94b5b0cd951ebb7051f1ec7.png](en-resource://database/3172:1)
+
+![Nginx模块结构图](nginx/core/_images/nginx_module.png)
 
 `ngx_module_t` 定义了7个方法：
 
@@ -23,7 +26,7 @@
   5. 构建`cycle->free_connections`空闲连接列表
   6. 为每个监听端口关联一个`ngx_connection_t`，并将监听套接字的可读事件回调设置为`ngx_event_accept`或`ngx_event_recvmsg`，然后注册监听套接字的可读事件
 
-## ngx_command_t命令解析结构体
+## `ngx_command_t`
 
 每个`ngx_module_t`可关联一个`ngx_command_t`数组，每个`ngx_command_t`结构对应`nginx.conf`配置文件中的一个指令。`ngx_command_t`结构体定义如下：
 
@@ -62,7 +65,7 @@ static ngx_command_t  ngx_http_commands[] = {
 };
 ```
 
-## 模块上下文
+## 模块上下文(`ngx_*_module_t`)
 
 不同的模块类型有不同的模块上下文，如：
 
