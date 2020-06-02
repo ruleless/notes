@@ -1,0 +1,510 @@
+
+<!DOCTYPE HTML>
+<html lang="" >
+    <head>
+        <meta charset="UTF-8">
+        <meta content="text/html; charset=utf-8" http-equiv="Content-Type">
+        <title>Nginx内存池 · GitBook</title>
+        <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+        <meta name="description" content="">
+        <meta name="generator" content="GitBook 3.2.3">
+        
+        
+        
+    
+    <link rel="stylesheet" href="../../gitbook/style.css">
+
+    
+            
+                
+                <link rel="stylesheet" href="../../gitbook/gitbook-plugin-highlight/website.css">
+                
+            
+                
+                <link rel="stylesheet" href="../../gitbook/gitbook-plugin-search/search.css">
+                
+            
+                
+                <link rel="stylesheet" href="../../gitbook/gitbook-plugin-fontsettings/website.css">
+                
+            
+        
+
+    
+
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+
+        
+    
+    
+    <meta name="HandheldFriendly" content="true"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <link rel="apple-touch-icon-precomposed" sizes="152x152" href="../../gitbook/images/apple-touch-icon-precomposed-152.png">
+    <link rel="shortcut icon" href="../../gitbook/images/favicon.ico" type="image/x-icon">
+
+    
+    <link rel="next" href="nginx_module_structure.html" />
+    
+    
+    <link rel="prev" href="nginx_log.html" />
+    
+
+    </head>
+    <body>
+        
+<div class="book">
+    <div class="book-summary">
+        
+            
+<div id="book-search-input" role="search">
+    <input type="text" placeholder="Type to search" />
+</div>
+
+            
+                <nav role="navigation">
+                
+
+
+<ul class="summary">
+    
+    
+
+    
+
+    
+        
+        
+    
+        <li class="chapter " data-level="1.1" data-path="../../">
+            
+                <a href="../../">
+            
+                    
+                    笔记概要
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.2" data-path="../../design-pattern/README.md">
+            
+                <span>
+            
+                    
+                    设计模式
+            
+                </a>
+            
+
+            
+            <ul class="articles">
+                
+    
+        <li class="chapter " data-level="1.2.1" data-path="../../design-pattern/principle.html">
+            
+                <a href="../../design-pattern/principle.html">
+            
+                    
+                    设计模式原则
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.2.2" data-path="../../design-pattern/common_pattern_for_backend.html">
+            
+                <a href="../../design-pattern/common_pattern_for_backend.html">
+            
+                    
+                    后端开发常用模式
+            
+                </a>
+            
+
+            
+        </li>
+    
+
+            </ul>
+            
+        </li>
+    
+        <li class="chapter " data-level="1.3" data-path="../">
+            
+                <a href="../">
+            
+                    
+                    Nginx
+            
+                </a>
+            
+
+            
+            <ul class="articles">
+                
+    
+        <li class="chapter " data-level="1.3.1" data-path="README.md">
+            
+                <span>
+            
+                    
+                    Nginx核心模块
+            
+                </a>
+            
+
+            
+            <ul class="articles">
+                
+    
+        <li class="chapter " data-level="1.3.1.1" data-path="nginx_log.html">
+            
+                <a href="nginx_log.html">
+            
+                    
+                    Nginx日志
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter active" data-level="1.3.1.2" data-path="nginx_mempool.html">
+            
+                <a href="nginx_mempool.html">
+            
+                    
+                    Nginx内存池
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.3.1.3" data-path="nginx_module_structure.html">
+            
+                <a href="nginx_module_structure.html">
+            
+                    
+                    Nginx模块结构
+            
+                </a>
+            
+
+            
+        </li>
+    
+
+            </ul>
+            
+        </li>
+    
+
+            </ul>
+            
+        </li>
+    
+
+    
+
+    <li class="divider"></li>
+
+    <li>
+        <a href="https://www.gitbook.com" target="blank" class="gitbook-link">
+            Published with GitBook
+        </a>
+    </li>
+</ul>
+
+
+                </nav>
+            
+        
+    </div>
+
+    <div class="book-body">
+        
+            <div class="body-inner">
+                
+                    
+
+<div class="book-header" role="navigation">
+    
+
+    <!-- Title -->
+    <h1>
+        <i class="fa fa-circle-o-notch fa-spin"></i>
+        <a href="../.." >Nginx内存池</a>
+    </h1>
+</div>
+
+
+
+
+                    <div class="page-wrapper" tabindex="-1" role="main">
+                        <div class="page-inner">
+                            
+<div id="book-search-results">
+    <div class="search-noresults">
+    
+                                <section class="normal markdown-section">
+                                
+                                <h1 id="nginx&#x5185;&#x5B58;&#x6C60;">Nginx&#x5185;&#x5B58;&#x6C60;</h1>
+<h2 id="&#x64CD;&#x4F5C;&#x63A5;&#x53E3;">&#x64CD;&#x4F5C;&#x63A5;&#x53E3;</h2>
+<p>&#x5728;&#x4F7F;&#x7528;&#x5185;&#x5B58;&#x6C60;&#x524D;&#xFF0C;&#x6211;&#x4EEC;&#x5148;&#x5F97;&#x521B;&#x5EFA;&#x5185;&#x5B58;&#x6C60;&#xFF1A;</p>
+<pre><code class="lang-c"><span class="hljs-keyword">ngx_pool_t</span> *ngx_create_pool(<span class="hljs-keyword">size_t</span> size, <span class="hljs-keyword">ngx_log_t</span> *<span class="hljs-built_in">log</span>);
+</code></pre>
+<p>&#x5982;&#xFF0C;&#x5728; <em>http</em> &#x6A21;&#x5757;&#x4E2D;&#x6BCF;&#x4E2A; <code>ngx_http_request_t</code>  &#x7ED3;&#x6784;&#x90FD;&#x6709;&#x4E00;&#x4E2A;&#x5185;&#x5B58;&#x6C60;&#xFF0C;&#x8FD9;&#x4E2A;&#x5185;&#x5B58;&#x6C60;&#x662F;&#x5728;&#x521B;&#x5EFA;&#x8BE5;&#x7ED3;&#x6784;&#x524D;&#x521B;&#x5EFA;&#x7684;&#xFF1B;&#x5185;&#x5B58;&#x6C60;&#x521B;&#x5EFA;&#x6210;&#x529F;&#x4E4B;&#x540E;&#xFF0C;&#x4F1A;&#x57FA;&#x4E8E;&#x8BE5;&#x5185;&#x5B58;&#x6C60;&#x5206;&#x914D; <code>ngx_http_request_t</code>  &#x7ED3;&#x6784;&#x7684;&#x7A7A;&#x95F4;&#xFF1A;</p>
+<pre><code class="lang-c"><span class="hljs-keyword">ngx_http_request_t</span> *
+ngx_http_create_request(<span class="hljs-keyword">ngx_connection_t</span> *c)
+{
+    <span class="hljs-keyword">ngx_pool_t</span>                 *pool;
+    <span class="hljs-keyword">ngx_time_t</span>                 *tp;
+    <span class="hljs-keyword">ngx_http_request_t</span>         *r;
+    <span class="hljs-keyword">ngx_http_log_ctx_t</span>         *ctx;
+    <span class="hljs-keyword">ngx_http_connection_t</span>      *hc;
+    <span class="hljs-keyword">ngx_http_core_srv_conf_t</span>   *cscf;
+    <span class="hljs-keyword">ngx_http_core_loc_conf_t</span>   *clcf;
+    <span class="hljs-keyword">ngx_http_core_main_conf_t</span>  *cmcf;
+
+    c-&gt;requests++;
+
+    hc = c-&gt;data;
+
+    cscf = ngx_http_get_module_srv_conf(hc-&gt;conf_ctx, ngx_http_core_module);
+
+    pool = ngx_create_pool(cscf-&gt;request_pool_size, c-&gt;<span class="hljs-built_in">log</span>);
+    <span class="hljs-keyword">if</span> (pool == <span class="hljs-literal">NULL</span>) {
+        <span class="hljs-keyword">return</span> <span class="hljs-literal">NULL</span>;
+    }
+
+    r = ngx_pcalloc(pool, <span class="hljs-keyword">sizeof</span>(<span class="hljs-keyword">ngx_http_request_t</span>));
+    <span class="hljs-keyword">if</span> (r == <span class="hljs-literal">NULL</span>) {
+        ngx_destroy_pool(pool);
+        <span class="hljs-keyword">return</span> <span class="hljs-literal">NULL</span>;
+    }
+
+    r-&gt;pool = pool;
+
+    ...
+</code></pre>
+<p>&#x4F7F;&#x7528;&#x5B8C;&#x4E4B;&#x540E;&#x7684;&#x5185;&#x5B58;&#x6C60;&#x5FC5;&#x987B;&#x901A;&#x8FC7;&#x4E0B;&#x9762;&#x7684;&#x51FD;&#x6570;&#x56DE;&#x6536;&#xFF1A;</p>
+<pre><code class="lang-c"><span class="hljs-function"><span class="hljs-keyword">void</span> <span class="hljs-title">ngx_destroy_pool</span><span class="hljs-params">(ngx_pool_t *pool)</span></span>;
+</code></pre>
+<p>&#x5982;&#x679C;&#x4E0D;&#x60F3;&#x5B8C;&#x5168;&#x56DE;&#x6536;&#xFF0C;&#x4E5F;&#x53EF;&#x901A;&#x8FC7;&#x4E0B;&#x9762;&#x7684;&#x51FD;&#x6570;&#x91CD;&#x7F6E;&#x5185;&#x5B58;&#x6C60;&#xFF1A;</p>
+<pre><code class="lang-c"><span class="hljs-function"><span class="hljs-keyword">void</span> <span class="hljs-title">ngx_reset_pool</span><span class="hljs-params">(ngx_pool_t *pool)</span></span>;
+</code></pre>
+<p>&#x5982;&#xFF0C;&#x4E0A;&#x9762;&#x8BA8;&#x8BBA;&#x7684; <code>ngx_http_request_t</code> &#x7ED3;&#x6784;&#x4E2D;&#x7684;&#x5185;&#x5B58;&#x6C60;&#x4F1A;&#x5728; <code>ngx_http_free_request</code> &#x51FD;&#x6570;&#x4E2D;&#x9500;&#x6BC1;&#xFF1A;</p>
+<pre><code class="lang-c"><span class="hljs-function"><span class="hljs-keyword">void</span>
+<span class="hljs-title">ngx_http_free_request</span><span class="hljs-params">(ngx_http_request_t *r, ngx_int_t rc)</span>
+</span>{
+    ...
+
+    <span class="hljs-comment">/*
+     * Setting r-&gt;pool to NULL will increase probability to catch double close
+     * of request since the request object is allocated from its own pool.
+     */</span>
+
+    pool = r-&gt;pool;
+    r-&gt;pool = <span class="hljs-literal">NULL</span>;
+
+    ngx_destroy_pool(pool);
+}
+</code></pre>
+<h2 id="&#x5185;&#x5B58;&#x6C60;&#x7684;&#x7ED3;&#x6784;&#x548C;&#x5206;&#x914D;&#x7B97;&#x6CD5;">&#x5185;&#x5B58;&#x6C60;&#x7684;&#x7ED3;&#x6784;&#x548C;&#x5206;&#x914D;&#x7B97;&#x6CD5;</h2>
+<p>&#x6211;&#x4EEC;&#x5148;&#x6765;&#x770B;&#x4E0B;&#x5185;&#x5B58;&#x6C60;&#x76F8;&#x5173;&#x7684;&#x7ED3;&#x6784;&#x4F53;&#xFF1A;</p>
+<pre><code class="lang-c"><span class="hljs-keyword">struct</span> ngx_pool_large_s {
+    <span class="hljs-keyword">ngx_pool_large_t</span>     *next;
+    <span class="hljs-keyword">void</span>                 *alloc;
+};
+
+<span class="hljs-keyword">typedef</span> <span class="hljs-keyword">struct</span> {
+    u_char               *last;
+    u_char               *end;
+    <span class="hljs-keyword">ngx_pool_t</span>           *next;
+    <span class="hljs-keyword">ngx_uint_t</span>            failed;
+} <span class="hljs-keyword">ngx_pool_data_t</span>;
+
+<span class="hljs-keyword">struct</span> ngx_pool_s {
+    <span class="hljs-keyword">ngx_pool_data_t</span>       d;
+    <span class="hljs-keyword">size_t</span>                max;
+    <span class="hljs-keyword">ngx_pool_t</span>           *current;
+    <span class="hljs-keyword">ngx_chain_t</span>          *chain;
+    <span class="hljs-keyword">ngx_pool_large_t</span>     *large;
+    <span class="hljs-keyword">ngx_pool_cleanup_t</span>   *cleanup;
+    <span class="hljs-keyword">ngx_log_t</span>            *<span class="hljs-built_in">log</span>;
+};
+
+<span class="hljs-keyword">typedef</span> <span class="hljs-keyword">struct</span> {
+    <span class="hljs-keyword">ngx_fd_t</span>              fd;
+    u_char               *name;
+    <span class="hljs-keyword">ngx_log_t</span>            *<span class="hljs-built_in">log</span>;
+} <span class="hljs-keyword">ngx_pool_cleanup_file_t</span>;
+</code></pre>
+<p>&#x4E00;&#x4E2A;&#x5185;&#x5B58;&#x6C60;&#x6709;&#x4E24;&#x4E2A;&#x5355;&#x94FE;&#x8868;&#xFF1A;</p>
+<ol>
+<li><em>large</em> &#x5927;&#x5185;&#x5B58;&#x5355;&#x94FE;&#x8868;&#xFF0C;&#x7528;&#x4E8E;&#x8BB0;&#x5F55;&#x5206;&#x914D;&#x7684;&#x5927;&#x5757;&#x5185;&#x5B58;&#xFF08;&#x5927;&#x4E8E; <code>ngx_pagesize - 1</code>&#xFF09;</li>
+<li><em>small</em> &#x5C0F;&#x5185;&#x5B58;&#x5355;&#x94FE;&#x8868;&#xFF0C;&#x7528;&#x4E8E;&#x5206;&#x914D;&#x5C0F;&#x5757;&#x5185;&#x5B58;&#xFF08;&#x5C0F;&#x4E8E;&#x7B49;&#x4E8E; <code>ngx_pagesize - 1</code>&#xFF09;</li>
+</ol>
+<p>&#x5927;&#x5757;&#x5185;&#x5B58;&#x7684;&#x5206;&#x914D;&#x4E00;&#x822C;&#x76F4;&#x63A5;&#x8C03;&#x7528; <em>malloc</em> &#x76F4;&#x63A5;&#x4ECE;&#x7CFB;&#x7EDF;&#x83B7;&#x53D6;&#xFF0C;&#x5206;&#x914D;&#x597D;&#x7684;&#x5185;&#x5B58;&#x63D2;&#x5165; <em>large</em> &#x5355;&#x94FE;&#x8868;&#xFF1B;&#x5C0F;&#x5757;&#x5185;&#x5B58;&#x5219;&#x4ECE; <em>small</em> &#x94FE;&#x8868;&#x7684;&#x7A7A;&#x95F2;&#x533A;&#x57DF;&#x5206;&#x914D;&#x3002;</p>
+<p>&#x5927;&#x5757;&#x5185;&#x5B58;&#x7684;&#x5206;&#x914D;&#x6BD4;&#x8F83;&#x7B80;&#x5355;&#xFF0C;&#x5728;&#x5B9E;&#x9645;&#x5E94;&#x7528;&#x573A;&#x666F;&#xFF0C;&#x9700;&#x8981;&#x8FDB;&#x884C;&#x5927;&#x5757;&#x5185;&#x5B58;&#x5206;&#x914D;&#x7684;&#x4E5F;&#x4E0D;&#x591A;&#xFF0C;&#x6240;&#x4EE5;&#xFF0C;&#x6211;&#x4EEC;&#x4E0D;&#x7EE7;&#x7EED;&#x8BA8;&#x8BBA;&#xFF1B;&#x6211;&#x4EEC;&#x63A5;&#x7740;&#x6765;&#x770B;&#x4E0B;&#x5C0F;&#x5757;&#x5185;&#x5B58;&#x5177;&#x4F53;&#x7684;&#x5206;&#x914D;&#x7B97;&#x6CD5;&#x3002;</p>
+<p><em>small</em> &#x5C0F;&#x5757;&#x5185;&#x5B58;&#x5355;&#x94FE;&#x8868;&#x7684;&#x8282;&#x70B9;&#x662F; <code>ngx_pool_t</code>&#x3002;
+<code>ngx_create_pool</code> &#x521B;&#x5EFA;&#x7684; <code>ngx_pool_t</code>  &#x662F;&#x94FE;&#x8868;&#x7684;&#x5165;&#x53E3;&#xFF1B;&#x6700;&#x5F00;&#x59CB;&#xFF0C;<code>ngx_pool_t</code> &#x5728;&#x94FE;&#x8868;&#x4E2D;&#x53EA;&#x5B58;&#x5728;&#x4E00;&#x4EFD;&#xFF0C;&#x800C;&#x5728;&#x5C0F;&#x5757;&#x5185;&#x5B58;&#x7684;&#x5206;&#x914D;&#x8FC7;&#x7A0B;&#x4E2D;&#xFF0C;&#x5982;&#x679C;&#x9884;&#x7559;&#x5185;&#x5B58;&#x4E0D;&#x8DB3;&#xFF0C;&#x5C31;&#x4F1A;&#x5206;&#x914D;&#x65B0;&#x7684; <code>ngx_pool_t</code> &#x7ED3;&#x6784;&#x3002;</p>
+<p><code>ngx_pool_t</code> &#x94FE;&#x8868;&#x5728;&#x5185;&#x5B58;&#x4E2D;&#x7684;&#x5E03;&#x5C40;&#x793A;&#x610F;&#x56FE;&#x5982;&#x4E0B;&#xFF1A;
+<img src="en-resource://database/3168:1" alt="8eb8ad289093e250c7d26d19422011ed.png"></p>
+<p>&#x901A;&#x8FC7; <code>ngx_ceate_pool</code> &#x521B;&#x5EFA;&#x7684; <em>pool</em> &#x4EE5;&#x53CA; <em>pool</em> &#x6210;&#x5458; <em>current</em> &#x90FD;&#x6307;&#x5411;&#x5934;&#x8282;&#x70B9;&#xFF1B;<em>last</em> &#x8868;&#x793A;&#x53EF;&#x5206;&#x914D;&#x5730;&#x5740;&#xFF1B;<em>end</em> &#x6307;&#x5411;&#x4E00;&#x4E2A; <code>ngx_pool_t</code> &#x7684;&#x5C3E;&#x90E8;&#xFF1B;<em>end-last</em> &#x5219;&#x662F;&#x4E00;&#x4E2A; <code>ngx_pool_t</code> &#x5BF9;&#x8C61;&#x5269;&#x4F59;&#x7684;&#x53EF;&#x5206;&#x914D;&#x5185;&#x5B58;&#x3002;
+<em>small</em> &#x5C0F;&#x5757;&#x5185;&#x5B58;&#x7684;&#x5206;&#x914D;&#x8FC7;&#x7A0B;&#x5982;&#x4E0B;&#xFF1A;</p>
+<pre><code class="lang-c"><span class="hljs-function"><span class="hljs-keyword">static</span> ngx_inline <span class="hljs-keyword">void</span> *
+<span class="hljs-title">ngx_palloc_small</span><span class="hljs-params">(ngx_pool_t *pool, size_t size, ngx_uint_t align)</span>
+</span>{
+    u_char      *m;
+    <span class="hljs-keyword">ngx_pool_t</span>  *p;
+    p = pool-&gt;current;
+    <span class="hljs-keyword">do</span> {
+        m = p-&gt;d.last;
+        <span class="hljs-keyword">if</span> (align) {
+            m = ngx_align_ptr(m, NGX_ALIGNMENT);
+        }
+        <span class="hljs-keyword">if</span> ((<span class="hljs-keyword">size_t</span>) (p-&gt;d.end - m) &gt;= size) {
+            p-&gt;d.last = m + size;
+            <span class="hljs-keyword">return</span> m;
+        }
+        p = p-&gt;d.next;
+    } <span class="hljs-keyword">while</span> (p);
+
+    <span class="hljs-keyword">return</span> ngx_palloc_block(pool, size);
+}
+</code></pre>
+<p>&#x5982;&#x4E0A;&#xFF0C;&#x5F53; <code>ngx_pool_t</code> &#x94FE;&#x8868;&#x4E2D;&#x6CA1;&#x6709;&#x53EF;&#x7528;&#x5185;&#x5B58;&#x540E;&#xFF0C;&#x5C31;&#x4F1A;&#x8C03;&#x7528; <code>ngx_allo_block</code> &#x6765;&#x7EE7;&#x7EED;&#x8FDB;&#x884C;&#x5206;&#x914D;&#xFF0C;&#x8BE5;&#x51FD;&#x6570;&#x4F1A;&#x521B;&#x5EFA;&#x4E00;&#x4E2A;&#x65B0;&#x7684; <code>ngx_pool_t</code> &#x5BF9;&#x8C61;&#xFF1A;</p>
+<pre><code class="lang-c"><span class="hljs-function"><span class="hljs-keyword">static</span> <span class="hljs-keyword">void</span> *
+<span class="hljs-title">ngx_palloc_block</span><span class="hljs-params">(ngx_pool_t *pool, size_t size)</span>
+</span>{
+    u_char      *m;
+    <span class="hljs-keyword">size_t</span>       psize;
+    <span class="hljs-keyword">ngx_pool_t</span>  *p, *<span class="hljs-keyword">new</span>;
+
+    psize = (<span class="hljs-keyword">size_t</span>) (pool-&gt;d.end - (u_char *) pool);
+    m = ngx_memalign(NGX_POOL_ALIGNMENT, psize, pool-&gt;<span class="hljs-built_in">log</span>);
+    <span class="hljs-keyword">if</span> (m == <span class="hljs-literal">NULL</span>) {
+        <span class="hljs-keyword">return</span> <span class="hljs-literal">NULL</span>;
+    }
+
+    <span class="hljs-keyword">new</span> = (<span class="hljs-keyword">ngx_pool_t</span> *) m;
+    <span class="hljs-keyword">new</span>-&gt;d.end = m + psize;
+    <span class="hljs-keyword">new</span>-&gt;d.next = <span class="hljs-literal">NULL</span>;
+    <span class="hljs-keyword">new</span>-&gt;d.failed = <span class="hljs-number">0</span>;
+
+    m += <span class="hljs-keyword">sizeof</span>(<span class="hljs-keyword">ngx_pool_data_t</span>);
+    m = ngx_align_ptr(m, NGX_ALIGNMENT);
+    <span class="hljs-keyword">new</span>-&gt;d.last = m + size;
+
+    <span class="hljs-keyword">for</span> (p = pool-&gt;current; p-&gt;d.next; p = p-&gt;d.next) {
+        <span class="hljs-keyword">if</span> (p-&gt;d.failed++ &gt; <span class="hljs-number">4</span>) {
+            pool-&gt;current = p-&gt;d.next;
+        }
+    }
+    p-&gt;d.next = <span class="hljs-keyword">new</span>;
+
+    <span class="hljs-keyword">return</span> m;
+}
+</code></pre>
+
+                                
+                                </section>
+                            
+    </div>
+    <div class="search-results">
+        <div class="has-results">
+            
+            <h1 class="search-results-title"><span class='search-results-count'></span> results matching "<span class='search-query'></span>"</h1>
+            <ul class="search-results-list"></ul>
+            
+        </div>
+        <div class="no-results">
+            
+            <h1 class="search-results-title">No results matching "<span class='search-query'></span>"</h1>
+            
+        </div>
+    </div>
+</div>
+
+                        </div>
+                    </div>
+                
+            </div>
+
+            
+                
+                <a href="nginx_log.html" class="navigation navigation-prev " aria-label="Previous page: Nginx日志">
+                    <i class="fa fa-angle-left"></i>
+                </a>
+                
+                
+                <a href="nginx_module_structure.html" class="navigation navigation-next " aria-label="Next page: Nginx模块结构">
+                    <i class="fa fa-angle-right"></i>
+                </a>
+                
+            
+        
+    </div>
+
+    <script>
+        var gitbook = gitbook || [];
+        gitbook.push(function() {
+            gitbook.page.hasChanged({"page":{"title":"Nginx内存池","level":"1.3.1.2","depth":3,"next":{"title":"Nginx模块结构","level":"1.3.1.3","depth":3,"path":"nginx/core/nginx_module_structure.md","ref":"nginx/core/nginx_module_structure.md","articles":[]},"previous":{"title":"Nginx日志","level":"1.3.1.1","depth":3,"path":"nginx/core/nginx_log.md","ref":"nginx/core/nginx_log.md","articles":[]},"dir":"ltr"},"config":{"gitbook":"*","theme":"default","variables":{},"plugins":[],"pluginsConfig":{"highlight":{},"search":{},"lunr":{"maxIndexSize":1000000,"ignoreSpecialCharacters":false},"sharing":{"facebook":true,"twitter":true,"google":false,"weibo":false,"instapaper":false,"vk":false,"all":["facebook","google","twitter","weibo","instapaper"]},"fontsettings":{"theme":"white","family":"sans","size":2},"theme-default":{"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"showLevel":false}},"structure":{"langs":"LANGS.md","readme":"README.md","glossary":"GLOSSARY.md","summary":"SUMMARY.md"},"pdf":{"pageNumbers":true,"fontSize":12,"fontFamily":"Arial","paperSize":"a4","chapterMark":"pagebreak","pageBreaksBefore":"/","margin":{"right":62,"left":62,"top":56,"bottom":56}},"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"}},"file":{"path":"nginx/core/nginx_mempool.md","mtime":"2020-06-02T09:20:43.703Z","type":"markdown"},"gitbook":{"version":"3.2.3","time":"2020-06-02T09:28:21.481Z"},"basePath":"../..","book":{"language":""}});
+        });
+    </script>
+</div>
+
+        
+    <script src="../../gitbook/gitbook.js"></script>
+    <script src="../../gitbook/theme.js"></script>
+    
+        
+        <script src="../../gitbook/gitbook-plugin-search/search-engine.js"></script>
+        
+    
+        
+        <script src="../../gitbook/gitbook-plugin-search/search.js"></script>
+        
+    
+        
+        <script src="../../gitbook/gitbook-plugin-lunr/lunr.min.js"></script>
+        
+    
+        
+        <script src="../../gitbook/gitbook-plugin-lunr/search-lunr.js"></script>
+        
+    
+        
+        <script src="../../gitbook/gitbook-plugin-sharing/buttons.js"></script>
+        
+    
+        
+        <script src="../../gitbook/gitbook-plugin-fontsettings/fontsettings.js"></script>
+        
+    
+
+    </body>
+</html>
+

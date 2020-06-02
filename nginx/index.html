@@ -4,7 +4,7 @@
     <head>
         <meta charset="UTF-8">
         <meta content="text/html; charset=utf-8" http-equiv="Content-Type">
-        <title>后端开发常用模式 · GitBook</title>
+        <title>Nginx · GitBook</title>
         <meta http-equiv="X-UA-Compatible" content="IE=edge" />
         <meta name="description" content="">
         <meta name="generator" content="GitBook 3.2.3">
@@ -57,10 +57,10 @@
     <link rel="shortcut icon" href="../gitbook/images/favicon.ico" type="image/x-icon">
 
     
-    <link rel="next" href="../nginx/" />
+    <link rel="next" href="core/README.md" />
     
     
-    <link rel="prev" href="principle.html" />
+    <link rel="prev" href="../design-pattern/common_pattern_for_backend.html" />
     
 
     </head>
@@ -102,7 +102,7 @@
             
         </li>
     
-        <li class="chapter " data-level="1.2" data-path="README.md">
+        <li class="chapter " data-level="1.2" data-path="../design-pattern/README.md">
             
                 <span>
             
@@ -116,9 +116,9 @@
             <ul class="articles">
                 
     
-        <li class="chapter " data-level="1.2.1" data-path="principle.html">
+        <li class="chapter " data-level="1.2.1" data-path="../design-pattern/principle.html">
             
-                <a href="principle.html">
+                <a href="../design-pattern/principle.html">
             
                     
                     设计模式原则
@@ -129,9 +129,9 @@
             
         </li>
     
-        <li class="chapter active" data-level="1.2.2" data-path="common_pattern_for_backend.html">
+        <li class="chapter " data-level="1.2.2" data-path="../design-pattern/common_pattern_for_backend.html">
             
-                <a href="common_pattern_for_backend.html">
+                <a href="../design-pattern/common_pattern_for_backend.html">
             
                     
                     后端开发常用模式
@@ -147,9 +147,9 @@
             
         </li>
     
-        <li class="chapter " data-level="1.3" data-path="../nginx/">
+        <li class="chapter active" data-level="1.3" data-path="./">
             
-                <a href="../nginx/">
+                <a href="./">
             
                     
                     Nginx
@@ -161,7 +161,7 @@
             <ul class="articles">
                 
     
-        <li class="chapter " data-level="1.3.1" data-path="../nginx/core/README.md">
+        <li class="chapter " data-level="1.3.1" data-path="core/README.md">
             
                 <span>
             
@@ -175,9 +175,9 @@
             <ul class="articles">
                 
     
-        <li class="chapter " data-level="1.3.1.1" data-path="../nginx/core/nginx_log.html">
+        <li class="chapter " data-level="1.3.1.1" data-path="core/nginx_log.html">
             
-                <a href="../nginx/core/nginx_log.html">
+                <a href="core/nginx_log.html">
             
                     
                     Nginx日志
@@ -188,9 +188,9 @@
             
         </li>
     
-        <li class="chapter " data-level="1.3.1.2" data-path="../nginx/core/nginx_mempool.html">
+        <li class="chapter " data-level="1.3.1.2" data-path="core/nginx_mempool.html">
             
-                <a href="../nginx/core/nginx_mempool.html">
+                <a href="core/nginx_mempool.html">
             
                     
                     Nginx内存池
@@ -201,9 +201,9 @@
             
         </li>
     
-        <li class="chapter " data-level="1.3.1.3" data-path="../nginx/core/nginx_module_structure.html">
+        <li class="chapter " data-level="1.3.1.3" data-path="core/nginx_module_structure.html">
             
-                <a href="../nginx/core/nginx_module_structure.html">
+                <a href="core/nginx_module_structure.html">
             
                     
                     Nginx模块结构
@@ -254,7 +254,7 @@
     <!-- Title -->
     <h1>
         <i class="fa fa-circle-o-notch fa-spin"></i>
-        <a href=".." >后端开发常用模式</a>
+        <a href=".." >Nginx</a>
     </h1>
 </div>
 
@@ -269,14 +269,29 @@
     
                                 <section class="normal markdown-section">
                                 
-                                <h1 id="&#x540E;&#x7AEF;&#x5F00;&#x53D1;&#x5E38;&#x7528;&#x6A21;&#x5F0F;">&#x540E;&#x7AEF;&#x5F00;&#x53D1;&#x5E38;&#x7528;&#x6A21;&#x5F0F;</h1>
-<p>&#x5728;&#x8FDB;&#x884C;&#x670D;&#x52A1;&#x7AEF;&#x7A0B;&#x5E8F;&#x5F00;&#x53D1;&#x65F6;&#xFF0C;&#x5E38;&#x7528;&#x5230;&#x7684;&#x8BBE;&#x8BA1;&#x6A21;&#x5F0F;&#x6709;&#xFF1A;</p>
+                                <h1 id="nginx">Nginx</h1>
+<h2 id="nginx&#x77E5;&#x8BC6;&#x70B9;">Nginx&#x77E5;&#x8BC6;&#x70B9;</h2>
+<p>Nginx&#x5305;&#x542B;&#x5982;&#x4E0B;&#x77E5;&#x8BC6;&#x70B9;&#xFF1A;</p>
 <ol>
-<li>&#x89C2;&#x5BDF;&#x8005;(Observer)</li>
-<li>&#x72B6;&#x6001;&#x6A21;&#x5F0F;(State)</li>
-<li>&#x7EC4;&#x5408;&#x6A21;&#x5F0F;(Compositor)</li>
-<li>&#x89E3;&#x91CA;&#x5668;&#x6A21;&#x5F0F;</li>
-<li>&#x5DE5;&#x5382;&#x65B9;&#x6CD5;&#x6A21;&#x5F0F;(Factory Method)</li>
+<li>Nginx&#x6570;&#x636E;&#x7ED3;&#x6784;<ol>
+<li>ngx_array_t</li>
+<li>ngx_list_t</li>
+<li>ngx_rbtree_t</li>
+</ol>
+</li>
+<li>Nginx&#x5185;&#x5B58;&#x6C60;</li>
+<li>Nginx&#x5206;&#x5C42;&#x6A21;&#x5757;&#x8BBE;&#x8BA1;</li>
+<li>Nginx&#x914D;&#x7F6E;&#x89E3;&#x6790;&#x673A;&#x5236;</li>
+<li>&#x6838;&#x5FC3;&#x6A21;&#x5757;<ol>
+<li>Event&#x6A21;&#x5757;</li>
+</ol>
+</li>
+<li>&#x529F;&#x80FD;&#x6A21;&#x5757;<ol>
+<li>Http&#x6A21;&#x5757;</li>
+<li>Stream&#x6A21;&#x5757;</li>
+<li>Mail&#x6A21;&#x5757;</li>
+</ol>
+</li>
 </ol>
 
                                 
@@ -305,12 +320,12 @@
 
             
                 
-                <a href="principle.html" class="navigation navigation-prev " aria-label="Previous page: 设计模式原则">
+                <a href="../design-pattern/common_pattern_for_backend.html" class="navigation navigation-prev " aria-label="Previous page: 后端开发常用模式">
                     <i class="fa fa-angle-left"></i>
                 </a>
                 
                 
-                <a href="../nginx/" class="navigation navigation-next " aria-label="Next page: Nginx">
+                <a href="core/README.md" class="navigation navigation-next " aria-label="Next page: Nginx核心模块">
                     <i class="fa fa-angle-right"></i>
                 </a>
                 
@@ -321,7 +336,7 @@
     <script>
         var gitbook = gitbook || [];
         gitbook.push(function() {
-            gitbook.page.hasChanged({"page":{"title":"后端开发常用模式","level":"1.2.2","depth":2,"next":{"title":"Nginx","level":"1.3","depth":1,"path":"nginx/README.md","ref":"nginx/README.md","articles":[{"title":"Nginx核心模块","level":"1.3.1","depth":2,"path":"nginx/core/README.md","ref":"nginx/core/README.md","articles":[{"title":"Nginx日志","level":"1.3.1.1","depth":3,"path":"nginx/core/nginx_log.md","ref":"nginx/core/nginx_log.md","articles":[]},{"title":"Nginx内存池","level":"1.3.1.2","depth":3,"path":"nginx/core/nginx_mempool.md","ref":"nginx/core/nginx_mempool.md","articles":[]},{"title":"Nginx模块结构","level":"1.3.1.3","depth":3,"path":"nginx/core/nginx_module_structure.md","ref":"nginx/core/nginx_module_structure.md","articles":[]}]}]},"previous":{"title":"设计模式原则","level":"1.2.1","depth":2,"path":"design-pattern/principle.md","ref":"design-pattern/principle.md","articles":[]},"dir":"ltr"},"config":{"gitbook":"*","theme":"default","variables":{},"plugins":[],"pluginsConfig":{"highlight":{},"search":{},"lunr":{"maxIndexSize":1000000,"ignoreSpecialCharacters":false},"sharing":{"facebook":true,"twitter":true,"google":false,"weibo":false,"instapaper":false,"vk":false,"all":["facebook","google","twitter","weibo","instapaper"]},"fontsettings":{"theme":"white","family":"sans","size":2},"theme-default":{"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"showLevel":false}},"structure":{"langs":"LANGS.md","readme":"README.md","glossary":"GLOSSARY.md","summary":"SUMMARY.md"},"pdf":{"pageNumbers":true,"fontSize":12,"fontFamily":"Arial","paperSize":"a4","chapterMark":"pagebreak","pageBreaksBefore":"/","margin":{"right":62,"left":62,"top":56,"bottom":56}},"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"}},"file":{"path":"design-pattern/common_pattern_for_backend.md","mtime":"2020-06-02T08:33:45.132Z","type":"markdown"},"gitbook":{"version":"3.2.3","time":"2020-06-02T09:28:21.481Z"},"basePath":"..","book":{"language":""}});
+            gitbook.page.hasChanged({"page":{"title":"Nginx","level":"1.3","depth":1,"next":{"title":"Nginx核心模块","level":"1.3.1","depth":2,"path":"nginx/core/README.md","ref":"nginx/core/README.md","articles":[{"title":"Nginx日志","level":"1.3.1.1","depth":3,"path":"nginx/core/nginx_log.md","ref":"nginx/core/nginx_log.md","articles":[]},{"title":"Nginx内存池","level":"1.3.1.2","depth":3,"path":"nginx/core/nginx_mempool.md","ref":"nginx/core/nginx_mempool.md","articles":[]},{"title":"Nginx模块结构","level":"1.3.1.3","depth":3,"path":"nginx/core/nginx_module_structure.md","ref":"nginx/core/nginx_module_structure.md","articles":[]}]},"previous":{"title":"后端开发常用模式","level":"1.2.2","depth":2,"path":"design-pattern/common_pattern_for_backend.md","ref":"design-pattern/common_pattern_for_backend.md","articles":[]},"dir":"ltr"},"config":{"gitbook":"*","theme":"default","variables":{},"plugins":[],"pluginsConfig":{"highlight":{},"search":{},"lunr":{"maxIndexSize":1000000,"ignoreSpecialCharacters":false},"sharing":{"facebook":true,"twitter":true,"google":false,"weibo":false,"instapaper":false,"vk":false,"all":["facebook","google","twitter","weibo","instapaper"]},"fontsettings":{"theme":"white","family":"sans","size":2},"theme-default":{"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"showLevel":false}},"structure":{"langs":"LANGS.md","readme":"README.md","glossary":"GLOSSARY.md","summary":"SUMMARY.md"},"pdf":{"pageNumbers":true,"fontSize":12,"fontFamily":"Arial","paperSize":"a4","chapterMark":"pagebreak","pageBreaksBefore":"/","margin":{"right":62,"left":62,"top":56,"bottom":56}},"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"}},"file":{"path":"nginx/README.md","mtime":"2020-06-02T09:10:59.020Z","type":"markdown"},"gitbook":{"version":"3.2.3","time":"2020-06-02T09:28:21.481Z"},"basePath":"..","book":{"language":""}});
         });
     </script>
 </div>

@@ -1,0 +1,470 @@
+
+<!DOCTYPE HTML>
+<html lang="" >
+    <head>
+        <meta charset="UTF-8">
+        <meta content="text/html; charset=utf-8" http-equiv="Content-Type">
+        <title>Nginx模块结构 · GitBook</title>
+        <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+        <meta name="description" content="">
+        <meta name="generator" content="GitBook 3.2.3">
+        
+        
+        
+    
+    <link rel="stylesheet" href="../../gitbook/style.css">
+
+    
+            
+                
+                <link rel="stylesheet" href="../../gitbook/gitbook-plugin-highlight/website.css">
+                
+            
+                
+                <link rel="stylesheet" href="../../gitbook/gitbook-plugin-search/search.css">
+                
+            
+                
+                <link rel="stylesheet" href="../../gitbook/gitbook-plugin-fontsettings/website.css">
+                
+            
+        
+
+    
+
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+
+        
+    
+    
+    <meta name="HandheldFriendly" content="true"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <link rel="apple-touch-icon-precomposed" sizes="152x152" href="../../gitbook/images/apple-touch-icon-precomposed-152.png">
+    <link rel="shortcut icon" href="../../gitbook/images/favicon.ico" type="image/x-icon">
+
+    
+    
+    <link rel="prev" href="nginx_mempool.html" />
+    
+
+    </head>
+    <body>
+        
+<div class="book">
+    <div class="book-summary">
+        
+            
+<div id="book-search-input" role="search">
+    <input type="text" placeholder="Type to search" />
+</div>
+
+            
+                <nav role="navigation">
+                
+
+
+<ul class="summary">
+    
+    
+
+    
+
+    
+        
+        
+    
+        <li class="chapter " data-level="1.1" data-path="../../">
+            
+                <a href="../../">
+            
+                    
+                    笔记概要
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.2" data-path="../../design-pattern/README.md">
+            
+                <span>
+            
+                    
+                    设计模式
+            
+                </a>
+            
+
+            
+            <ul class="articles">
+                
+    
+        <li class="chapter " data-level="1.2.1" data-path="../../design-pattern/principle.html">
+            
+                <a href="../../design-pattern/principle.html">
+            
+                    
+                    设计模式原则
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.2.2" data-path="../../design-pattern/common_pattern_for_backend.html">
+            
+                <a href="../../design-pattern/common_pattern_for_backend.html">
+            
+                    
+                    后端开发常用模式
+            
+                </a>
+            
+
+            
+        </li>
+    
+
+            </ul>
+            
+        </li>
+    
+        <li class="chapter " data-level="1.3" data-path="../">
+            
+                <a href="../">
+            
+                    
+                    Nginx
+            
+                </a>
+            
+
+            
+            <ul class="articles">
+                
+    
+        <li class="chapter " data-level="1.3.1" data-path="README.md">
+            
+                <span>
+            
+                    
+                    Nginx核心模块
+            
+                </a>
+            
+
+            
+            <ul class="articles">
+                
+    
+        <li class="chapter " data-level="1.3.1.1" data-path="nginx_log.html">
+            
+                <a href="nginx_log.html">
+            
+                    
+                    Nginx日志
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.3.1.2" data-path="nginx_mempool.html">
+            
+                <a href="nginx_mempool.html">
+            
+                    
+                    Nginx内存池
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter active" data-level="1.3.1.3" data-path="nginx_module_structure.html">
+            
+                <a href="nginx_module_structure.html">
+            
+                    
+                    Nginx模块结构
+            
+                </a>
+            
+
+            
+        </li>
+    
+
+            </ul>
+            
+        </li>
+    
+
+            </ul>
+            
+        </li>
+    
+
+    
+
+    <li class="divider"></li>
+
+    <li>
+        <a href="https://www.gitbook.com" target="blank" class="gitbook-link">
+            Published with GitBook
+        </a>
+    </li>
+</ul>
+
+
+                </nav>
+            
+        
+    </div>
+
+    <div class="book-body">
+        
+            <div class="body-inner">
+                
+                    
+
+<div class="book-header" role="navigation">
+    
+
+    <!-- Title -->
+    <h1>
+        <i class="fa fa-circle-o-notch fa-spin"></i>
+        <a href="../.." >Nginx模块结构</a>
+    </h1>
+</div>
+
+
+
+
+                    <div class="page-wrapper" tabindex="-1" role="main">
+                        <div class="page-inner">
+                            
+<div id="book-search-results">
+    <div class="search-noresults">
+    
+                                <section class="normal markdown-section">
+                                
+                                <h1 id="nginx&#x6A21;&#x5757;&#x7ED3;&#x6784;">Nginx&#x6A21;&#x5757;&#x7ED3;&#x6784;</h1>
+<p>&#x5728;nginx&#x4E2D;&#xFF0C;&#x4EE5;<code>ngx_module_t</code>&#x7ED3;&#x6784;&#x4F53;&#x62BD;&#x8C61;&#x6A21;&#x5757;&#xFF0C;<code>ngx_module_t</code>&#x5173;&#x8054;&#x4E00;&#x7EC4;<code>ngx_command_t</code>&#x547D;&#x4EE4;&#x6570;&#x7EC4;&#x548C;&#x4E00;&#x4E2A;<code>ngx_*_module_t</code>&#x4E0A;&#x4E0B;&#x6587;&#x3002;&#x793A;&#x610F;&#x56FE;&#x5982;&#x4E0B;&#xFF1A;
+<img src="en-resource://database/3172:1" alt="d11484cce94b5b0cd951ebb7051f1ec7.png"></p>
+<p><code>ngx_module_t</code> &#x5B9A;&#x4E49;&#x4E86;7&#x4E2A;&#x65B9;&#x6CD5;&#xFF1A;</p>
+<ol>
+<li><code>ngx_int_t  (*init_master)(ngx_log_t *log);</code></li>
+<li><code>ngx_int_t  (*init_module)(ngx_cycle_t *cycle);</code></li>
+<li><code>ngx_int_t  (*init_process)(ngx_cycle_t *cycle);</code></li>
+<li><code>ngx_int_t  (*init_thread)(ngx_cycle_t *cycle);</code></li>
+<li><code>void  (*exit_thread)(ngx_cycle_t *cycle);</code></li>
+<li><code>void  (*exit_process)(ngx_cycle_t *cycle);</code></li>
+<li><code>void (*exit_master)(ngx_cycle_t *cycle);</code></li>
+</ol>
+<p>&#x8FD9;7&#x4E2A;&#x65B9;&#x6CD5;&#x5728;nginx&#x4E2D;&#x4F1A;&#x5728;&#x4E0D;&#x540C;&#x7684;&#x65F6;&#x673A;&#x88AB;&#x8C03;&#x7528;&#xFF0C;nginx&#x5404;&#x529F;&#x80FD;&#x6A21;&#x5757;&#x548C;&#x975E;&#x529F;&#x80FD;&#x6A21;&#x5757;&#xFF0C;&#x53EF;&#x4EE5;&#x901A;&#x8FC7;&#x8FD9;7&#x4E2A;&#x65B9;&#x6CD5;&#x5728;&#x4E0D;&#x540C;&#x7684;&#x65F6;&#x673A;&#x63D2;&#x5165;&#x81EA;&#x5DF1;&#x7684;&#x4E1A;&#x52A1;&#x4EE3;&#x7801;&#x3002;
+&#x5982;&#xFF0C;<code>ngx_event_core_module</code>&#x5C31;&#x901A;&#x8FC7;<code>init_process</code>&#x6765;&#x5B8C;&#x6210;&#x5982;&#x4E0B;&#x51E0;&#x4EF6;&#x4E8B;&#x60C5;&#xFF1A;</p>
+<ol>
+<li>&#x521D;&#x59CB;&#x5316;<code>ngx_posted_accept_events</code>&#x548C;<code>ngx_posted_events</code>&#x53CC;&#x5411;&#x94FE;&#x8868;</li>
+<li>&#x8C03;&#x7528;<code>ngx_event_timer_init</code>&#x521D;&#x59CB;&#x5316;&#x5B9A;&#x65F6;&#x5668;</li>
+<li>&#x8C03;&#x7528;<code>ngx_event_actions_t</code>&#x7ED3;&#x6784;&#x4F53;&#x4E2D;&#x7684;<code>init</code>&#x65B9;&#x6CD5;&#xFF0C;&#x5982;&#x5BF9;&#x4E8E;epoll&#x6A21;&#x5757;&#x6765;&#x8BF4;&#xFF0C;&#x8FD9;&#x65B9;&#x6CD5;&#x4E3A;&#xFF1A;<code>ngx_epoll_init</code></li>
+<li>&#x9884;&#x521B;&#x5EFA;<code>cycle-&gt;connections</code>&#x8FDE;&#x63A5;&#x6570;&#x7EC4;&#xFF0C;&#x5E76;&#x5C06;&#x6BCF;&#x4E2A;&#x8FDE;&#x63A5;&#x5173;&#x8054;&#x4E0A;&#x8BFB;&#x5199;&#x4E8B;&#x4EF6;&#x7ED3;&#x6784;&#x4F53;&#xFF1A;<code>ngx_event_t</code></li>
+<li>&#x6784;&#x5EFA;<code>cycle-&gt;free_connections</code>&#x7A7A;&#x95F2;&#x8FDE;&#x63A5;&#x5217;&#x8868;</li>
+<li>&#x4E3A;&#x6BCF;&#x4E2A;&#x76D1;&#x542C;&#x7AEF;&#x53E3;&#x5173;&#x8054;&#x4E00;&#x4E2A;<code>ngx_connection_t</code>&#xFF0C;&#x5E76;&#x5C06;&#x76D1;&#x542C;&#x5957;&#x63A5;&#x5B57;&#x7684;&#x53EF;&#x8BFB;&#x4E8B;&#x4EF6;&#x56DE;&#x8C03;&#x8BBE;&#x7F6E;&#x4E3A;<code>ngx_event_accept</code>&#x6216;<code>ngx_event_recvmsg</code>&#xFF0C;&#x7136;&#x540E;&#x6CE8;&#x518C;&#x76D1;&#x542C;&#x5957;&#x63A5;&#x5B57;&#x7684;&#x53EF;&#x8BFB;&#x4E8B;&#x4EF6;</li>
+</ol>
+<h2 id="ngxcommandt&#x547D;&#x4EE4;&#x89E3;&#x6790;&#x7ED3;&#x6784;&#x4F53;">ngx_command_t&#x547D;&#x4EE4;&#x89E3;&#x6790;&#x7ED3;&#x6784;&#x4F53;</h2>
+<p>&#x6BCF;&#x4E2A;<code>ngx_module_t</code>&#x53EF;&#x5173;&#x8054;&#x4E00;&#x4E2A;<code>ngx_command_t</code>&#x6570;&#x7EC4;&#xFF0C;&#x6BCF;&#x4E2A;<code>ngx_command_t</code>&#x7ED3;&#x6784;&#x5BF9;&#x5E94;<code>nginx.conf</code>&#x914D;&#x7F6E;&#x6587;&#x4EF6;&#x4E2D;&#x7684;&#x4E00;&#x4E2A;&#x6307;&#x4EE4;&#x3002;<code>ngx_command_t</code>&#x7ED3;&#x6784;&#x4F53;&#x5B9A;&#x4E49;&#x5982;&#x4E0B;&#xFF1A;</p>
+<pre><code class="lang-c++"><span class="hljs-keyword">struct</span> ngx_command_s {
+    <span class="hljs-keyword">ngx_str_t</span>              name;
+    <span class="hljs-keyword">ngx_uint_t</span>            type;
+    <span class="hljs-keyword">char</span>                 *(*<span class="hljs-built_in">set</span>)(<span class="hljs-keyword">ngx_conf_t</span> *cf, <span class="hljs-keyword">ngx_command_t</span> *cmd, <span class="hljs-keyword">void</span> *conf);
+    <span class="hljs-keyword">ngx_uint_t</span>            conf;
+    <span class="hljs-keyword">ngx_uint_t</span>            offset;
+    <span class="hljs-keyword">void</span>                    *post;
+};
+</code></pre>
+<p>&#x8BE5;&#x7ED3;&#x6784;&#x4F53;&#x5404;&#x6210;&#x5458;&#x8BF4;&#x660E;&#x5982;&#x4E0B;&#xFF1A;</p>
+<ul>
+<li>name: &#x6307;&#x4EE4;&#x540D;&#x79F0;</li>
+<li>type: &#x6307;&#x4EE4;&#x7EA7;&#x522B;&#x548C;&#x6307;&#x4EE4;&#x53C2;&#x6570;&#x5B9A;&#x4E49;</li>
+<li>set: &#x6307;&#x4EE4;&#x89E3;&#x6790;&#x51FD;&#x6570;</li>
+<li>conf: &#x7ED3;&#x6784;&#x6307;&#x9488;&#x504F;&#x79FB;</li>
+<li>offset: &#x7ED3;&#x6784;&#x4F53;&#x6210;&#x5458;&#x504F;&#x79FB;</li>
+<li>post: &#x4E0D;&#x5E38;&#x7528;</li>
+</ul>
+<p>&#x5982;&#xFF0C;&#x89E3;&#x6790;http&#x914D;&#x7F6E;&#x5757;&#x7684;&#x6307;&#x4EE4;&#x5B9A;&#x4E49;&#x5982;&#x4E0B;&#xFF1A;</p>
+<pre><code class="lang-c++"><span class="hljs-keyword">static</span> <span class="hljs-keyword">ngx_command_t</span>  ngx_http_commands[] = {
+    { ngx_string(<span class="hljs-string">&quot;http&quot;</span>),
+      NGX_MAIN_CONF|NGX_CONF_BLOCK|NGX_CONF_NOARGS,
+      ngx_http_block,
+      <span class="hljs-number">0</span>,
+      <span class="hljs-number">0</span>,
+      <span class="hljs-literal">NULL</span> },
+
+      ngx_null_command
+};
+</code></pre>
+<h2 id="&#x6A21;&#x5757;&#x4E0A;&#x4E0B;&#x6587;">&#x6A21;&#x5757;&#x4E0A;&#x4E0B;&#x6587;</h2>
+<p>&#x4E0D;&#x540C;&#x7684;&#x6A21;&#x5757;&#x7C7B;&#x578B;&#x6709;&#x4E0D;&#x540C;&#x7684;&#x6A21;&#x5757;&#x4E0A;&#x4E0B;&#x6587;&#xFF0C;&#x5982;&#xFF1A;</p>
+<ul>
+<li><code>NGX_CORE_MODULE</code> &#x7C7B;&#x578B;&#x7684;&#x6A21;&#x5757;&#x5BF9;&#x5E94;&#x7684;&#x4E0A;&#x6587;&#x4E3A; <code>ngx_core_module_t</code></li>
+<li><code>NGX_EVENT_MODULE</code> &#x7C7B;&#x578B;&#x7684;&#x6A21;&#x5757;&#x5BF9;&#x5E94;&#x7684;&#x4E0A;&#x4E0B;&#x6587;&#x4E3A; <code>ngx_event_module_t</code></li>
+<li><code>NGX_HTTP_MODULE</code> &#x7C7B;&#x578B;&#x7684;&#x6A21;&#x5757;&#x5BF9;&#x5E94;&#x7684;&#x4E0A;&#x4E0B;&#x6587;&#x4E3A; <code>ngx_http_mdule_t</code></li>
+<li><code>NGX_MAIL_MODULE</code> &#x7C7B;&#x578B;&#x7684;&#x6A21;&#x5757;&#x5BF9;&#x5E94;&#x7684;&#x4E0A;&#x4E0B;&#x6587;&#x4E3A; <code>ngx_mail_module_t</code></li>
+<li><code>NGX_STREAM_MODULE</code> &#x7C7B;&#x578B;&#x7684;&#x6A21;&#x5757;&#x5BF9;&#x5E94;&#x7684;&#x4E0A;&#x4E0B;&#x6587;&#x4E3A; <code>ngx_stream_module_t</code></li>
+</ul>
+<p>&#x90A3;&#x4E48;&#xFF0C;&#x6A21;&#x5757;&#x4E0A;&#x4E0B;&#x6587;&#x4E00;&#x822C;&#x627F;&#x62C5;&#x4EC0;&#x4E48;&#x6837;&#x7684;&#x804C;&#x8D23;&#x5462;&#xFF1F;
+&#x5982;&#xFF0C;<code>ngx_core_module_t</code>&#x7684;&#x5B9A;&#x4E49;&#x4E3A;&#xFF1A;</p>
+<pre><code class="lang-c++"><span class="hljs-keyword">typedef</span> <span class="hljs-keyword">struct</span> {
+    <span class="hljs-keyword">ngx_str_t</span>             name;
+    <span class="hljs-keyword">void</span>               *(*create_conf)(<span class="hljs-keyword">ngx_cycle_t</span> *cycle);
+    <span class="hljs-keyword">char</span>               *(*init_conf)(<span class="hljs-keyword">ngx_cycle_t</span> *cycle, <span class="hljs-keyword">void</span> *conf);
+} <span class="hljs-keyword">ngx_core_module_t</span>;
+</code></pre>
+<p>&#x8BE5;&#x4E0A;&#x4E0B;&#x6587;&#x7ED3;&#x6784;&#x4E3B;&#x8981;&#x5B9A;&#x4E49;&#x4E86;&#x4E00;&#x4E2A;&#x914D;&#x7F6E;&#x521B;&#x5EFA;&#x548C;&#x521D;&#x59CB;&#x5316;&#x51FD;&#x6570;&#x3002;</p>
+<p>&#x5982;&#xFF0C;<code>ngx_event_module_t</code>&#x7684;&#x5B9A;&#x4E49;&#x4E3A;&#xFF1A;</p>
+<pre><code class="lang-c++"><span class="hljs-keyword">typedef</span> <span class="hljs-keyword">struct</span> {
+    <span class="hljs-keyword">ngx_str_t</span>              *name;
+
+    <span class="hljs-keyword">void</span>                 *(*create_conf)(<span class="hljs-keyword">ngx_cycle_t</span> *cycle);
+    <span class="hljs-keyword">char</span>                 *(*init_conf)(<span class="hljs-keyword">ngx_cycle_t</span> *cycle, <span class="hljs-keyword">void</span> *conf);
+
+    <span class="hljs-keyword">ngx_event_actions_t</span>     actions;
+} <span class="hljs-keyword">ngx_event_module_t</span>;
+</code></pre>
+<p>&#x8BE5;&#x4E0A;&#x4E0B;&#x6587;&#x7ED3;&#x6784;&#x540C;&#x6837;&#x6709;&#x914D;&#x7F6E;&#x521B;&#x5EFA;&#x548C;&#x521D;&#x59CB;&#x5316;&#x51FD;&#x6570;&#xFF0C;&#x53E6;&#x5916;&#x8FD8;&#x6709;&#x7C7B;&#x578B;&#x4E3A;<code>ngx_event_actions_t</code>&#x7684;&#x6210;&#x5458;&#xFF0C;&#x8BE5;&#x7ED3;&#x6784;&#x4F53;&#x5B9A;&#x4E49;&#x5982;&#x4E0B;&#xFF1A;</p>
+<pre><code class="lang-c++"><span class="hljs-keyword">typedef</span> <span class="hljs-keyword">struct</span> {
+    <span class="hljs-keyword">ngx_int_t</span>  (*add)(<span class="hljs-keyword">ngx_event_t</span> *ev, <span class="hljs-keyword">ngx_int_t</span> event, <span class="hljs-keyword">ngx_uint_t</span> flags);
+    <span class="hljs-keyword">ngx_int_t</span>  (*del)(<span class="hljs-keyword">ngx_event_t</span> *ev, <span class="hljs-keyword">ngx_int_t</span> event, <span class="hljs-keyword">ngx_uint_t</span> flags);
+
+    <span class="hljs-keyword">ngx_int_t</span>  (*enable)(<span class="hljs-keyword">ngx_event_t</span> *ev, <span class="hljs-keyword">ngx_int_t</span> event, <span class="hljs-keyword">ngx_uint_t</span> flags);
+    <span class="hljs-keyword">ngx_int_t</span>  (*disable)(<span class="hljs-keyword">ngx_event_t</span> *ev, <span class="hljs-keyword">ngx_int_t</span> event, <span class="hljs-keyword">ngx_uint_t</span> flags);
+
+    <span class="hljs-keyword">ngx_int_t</span>  (*add_conn)(<span class="hljs-keyword">ngx_connection_t</span> *c);
+    <span class="hljs-keyword">ngx_int_t</span>  (*del_conn)(<span class="hljs-keyword">ngx_connection_t</span> *c, <span class="hljs-keyword">ngx_uint_t</span> flags);
+
+    <span class="hljs-keyword">ngx_int_t</span>  (*notify)(ngx_event_handler_pt handler);
+
+    <span class="hljs-keyword">ngx_int_t</span>  (*process_events)(<span class="hljs-keyword">ngx_cycle_t</span> *cycle, <span class="hljs-keyword">ngx_msec_t</span> timer,
+                                 <span class="hljs-keyword">ngx_uint_t</span> flags);
+
+    <span class="hljs-keyword">ngx_int_t</span>  (*init)(<span class="hljs-keyword">ngx_cycle_t</span> *cycle, <span class="hljs-keyword">ngx_msec_t</span> timer);
+    <span class="hljs-keyword">void</span>       (*done)(<span class="hljs-keyword">ngx_cycle_t</span> *cycle);
+} <span class="hljs-keyword">ngx_event_actions_t</span>;
+</code></pre>
+<p>&#x8BE5;&#x7ED3;&#x6784;&#x4F53;&#x8BD5;&#x56FE;&#x62BD;&#x8C61;&#x4E0D;&#x540C;&#x5E73;&#x53F0;&#x7684;&#x7F51;&#x7EDC;I/O&#x63A5;&#x53E3;&#x3002;</p>
+<p><code>ngx_http_module_t</code>&#x7684;&#x5B9A;&#x4E49;&#x4E3A;&#xFF1A;</p>
+<pre><code class="lang-c++"><span class="hljs-keyword">typedef</span> <span class="hljs-keyword">struct</span> {
+    <span class="hljs-keyword">ngx_int_t</span>   (*preconfiguration)(<span class="hljs-keyword">ngx_conf_t</span> *cf);
+    <span class="hljs-keyword">ngx_int_t</span>   (*postconfiguration)(<span class="hljs-keyword">ngx_conf_t</span> *cf);
+
+    <span class="hljs-keyword">void</span>       *(*create_main_conf)(<span class="hljs-keyword">ngx_conf_t</span> *cf);
+    <span class="hljs-keyword">char</span>       *(*init_main_conf)(<span class="hljs-keyword">ngx_conf_t</span> *cf, <span class="hljs-keyword">void</span> *conf);
+
+    <span class="hljs-keyword">void</span>       *(*create_srv_conf)(<span class="hljs-keyword">ngx_conf_t</span> *cf);
+    <span class="hljs-keyword">char</span>       *(*merge_srv_conf)(<span class="hljs-keyword">ngx_conf_t</span> *cf, <span class="hljs-keyword">void</span> *prev, <span class="hljs-keyword">void</span> *conf);
+
+    <span class="hljs-keyword">void</span>       *(*create_loc_conf)(<span class="hljs-keyword">ngx_conf_t</span> *cf);
+    <span class="hljs-keyword">char</span>       *(*merge_loc_conf)(<span class="hljs-keyword">ngx_conf_t</span> *cf, <span class="hljs-keyword">void</span> *prev, <span class="hljs-keyword">void</span> *conf);
+} <span class="hljs-keyword">ngx_http_module_t</span>;
+</code></pre>
+<p>&#x8BE5;&#x4E0A;&#x4E0B;&#x6587;&#x7ED3;&#x6784;&#x5B9A;&#x4E49;&#x4E86;&#x4E0D;&#x540C;&#x5C42;&#x7EA7;&#x7684;&#x914D;&#x7F6E;&#x521B;&#x5EFA;&#x548C;&#x5408;&#x5E76;&#x51FD;&#x6570;&#x3002;</p>
+<p>&#x4ECE;&#x4E0A;&#x9762;&#x7684;&#x4F8B;&#x5B50;&#x53EF;&#x4EE5;&#x770B;&#x51FA;&#xFF0C;&#x6A21;&#x5757;&#x4E0A;&#x4E0B;&#x6587;&#x4E3B;&#x8981;&#x7528;&#x4E8E;&#xFF1A;</p>
+<ol>
+<li>&#x521B;&#x5EFA;&#x548C;&#x521D;&#x59CB;&#x5316;&#xFF08;&#x6216;&#x5408;&#x5E76;&#xFF09;&#x914D;&#x7F6E;&#x7ED3;&#x6784;</li>
+<li>&#x8868;&#x8FBE;&#x4E1A;&#x52A1;&#x6A21;&#x5757;&#x72EC;&#x6709;&#x7684;&#x6982;&#x5FF5;&#xFF0C;&#x5982;&#x5728;&#x4E8B;&#x4EF6;&#x6A21;&#x5757;&#x4E2D;&#xFF0C;&#x5B9A;&#x4E49;&#x4E86; <code>ngx_event_actions_t</code> &#x7ED3;&#x6784;&#x6765;&#x8868;&#x793A;&#x4E00;&#x7CFB;&#x5217;&#x7684;&#x7F51;&#x7EDC;I/O&#x884C;&#x4E3A;</li>
+</ol>
+
+                                
+                                </section>
+                            
+    </div>
+    <div class="search-results">
+        <div class="has-results">
+            
+            <h1 class="search-results-title"><span class='search-results-count'></span> results matching "<span class='search-query'></span>"</h1>
+            <ul class="search-results-list"></ul>
+            
+        </div>
+        <div class="no-results">
+            
+            <h1 class="search-results-title">No results matching "<span class='search-query'></span>"</h1>
+            
+        </div>
+    </div>
+</div>
+
+                        </div>
+                    </div>
+                
+            </div>
+
+            
+                
+                <a href="nginx_mempool.html" class="navigation navigation-prev navigation-unique" aria-label="Previous page: Nginx内存池">
+                    <i class="fa fa-angle-left"></i>
+                </a>
+                
+                
+            
+        
+    </div>
+
+    <script>
+        var gitbook = gitbook || [];
+        gitbook.push(function() {
+            gitbook.page.hasChanged({"page":{"title":"Nginx模块结构","level":"1.3.1.3","depth":3,"previous":{"title":"Nginx内存池","level":"1.3.1.2","depth":3,"path":"nginx/core/nginx_mempool.md","ref":"nginx/core/nginx_mempool.md","articles":[]},"dir":"ltr"},"config":{"gitbook":"*","theme":"default","variables":{},"plugins":[],"pluginsConfig":{"highlight":{},"search":{},"lunr":{"maxIndexSize":1000000,"ignoreSpecialCharacters":false},"sharing":{"facebook":true,"twitter":true,"google":false,"weibo":false,"instapaper":false,"vk":false,"all":["facebook","google","twitter","weibo","instapaper"]},"fontsettings":{"theme":"white","family":"sans","size":2},"theme-default":{"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"showLevel":false}},"structure":{"langs":"LANGS.md","readme":"README.md","glossary":"GLOSSARY.md","summary":"SUMMARY.md"},"pdf":{"pageNumbers":true,"fontSize":12,"fontFamily":"Arial","paperSize":"a4","chapterMark":"pagebreak","pageBreaksBefore":"/","margin":{"right":62,"left":62,"top":56,"bottom":56}},"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"}},"file":{"path":"nginx/core/nginx_module_structure.md","mtime":"2020-06-02T09:26:59.781Z","type":"markdown"},"gitbook":{"version":"3.2.3","time":"2020-06-02T09:28:21.481Z"},"basePath":"../..","book":{"language":""}});
+        });
+    </script>
+</div>
+
+        
+    <script src="../../gitbook/gitbook.js"></script>
+    <script src="../../gitbook/theme.js"></script>
+    
+        
+        <script src="../../gitbook/gitbook-plugin-search/search-engine.js"></script>
+        
+    
+        
+        <script src="../../gitbook/gitbook-plugin-search/search.js"></script>
+        
+    
+        
+        <script src="../../gitbook/gitbook-plugin-lunr/lunr.min.js"></script>
+        
+    
+        
+        <script src="../../gitbook/gitbook-plugin-lunr/search-lunr.js"></script>
+        
+    
+        
+        <script src="../../gitbook/gitbook-plugin-sharing/buttons.js"></script>
+        
+    
+        
+        <script src="../../gitbook/gitbook-plugin-fontsettings/fontsettings.js"></script>
+        
+    
+
+    </body>
+</html>
+
