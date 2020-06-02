@@ -4,7 +4,7 @@
 
 在nginx中，以`ngx_module_t`结构体抽象模块，`ngx_module_t`关联一组`ngx_command_t`命令数组和一个`ngx_*_module_t`上下文。示意图如下：
 
-![Nginx模块结构图](nginx/core/_images/nginx_module.png)
+![Nginx模块结构图](_images/nginx_module.png)
 
 `ngx_module_t` 定义了7个方法：
 

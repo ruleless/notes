@@ -116,7 +116,7 @@ typedef struct {
 
 `ngx_pool_t` 链表在内存中的布局示意图如下：
 
-![链表结构](nginx/core/_images/nginx_mempool_link.png)
+![链表结构](_images/nginx_mempool_link.png)
 
 通过 `ngx_ceate_pool` 创建的 *pool* 以及 *pool* 成员 *current* 都指向头节点；*last* 表示可分配地址；*end* 指向一个 `ngx_pool_t` 的尾部；*end-last* 则是一个 `ngx_pool_t` 对象剩余的可分配内存。
 *small* 小块内存的分配过程如下：
