@@ -24,6 +24,10 @@
     "github": {
       "url": "https://github.com/ruleless/notes"
     },
+    "editlink": {
+      "base": "https://github.com/ruleless/notes/blob/master/",
+      "label": "编辑本页"
+    },
     "page-treeview": {
       "copyright": "Copyright &#169; ruleless",
       "minHeaderCount": "2",
