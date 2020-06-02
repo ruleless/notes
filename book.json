@@ -1,0 +1,33 @@
+{
+  "title": "我的笔记",
+  "author": "ruleless",
+  "language": "zh-hans",
+  "links": {
+    "sidebar": {
+      "GitHub": "https://github.com/ruleless/notes"
+    }
+  },
+  "plugins": [
+    "-livereload",
+    "image-captions",
+    "github",
+    "page-treeview@2.9.8",
+    "editlink"
+  ],
+  "pluginsConfig": {
+    "image-captions": {
+      "attributes": {
+        "width": "600"
+      },
+      "caption": "图 _PAGE_LEVEL_._PAGE_IMAGE_NUMBER_ - _CAPTION_"
+    },
+    "github": {
+      "url": "https://github.com/ruleless/notes"
+    },
+    "page-treeview": {
+      "copyright": "Copyright &#169; ruleless",
+      "minHeaderCount": "2",
+      "minHeaderDeep": "2"
+    }
+  }
+}
